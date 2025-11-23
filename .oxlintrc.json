@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["import", "typescript", "unicorn", "promise"],
+  "env": {
+    "shared-node-browser": true
+  },
+  "categories": {
+    "correctness": "error",
+    "nursery": "error"
+  }
+}
