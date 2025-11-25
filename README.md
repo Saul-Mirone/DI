@@ -29,7 +29,7 @@ The container is designed to be **statically configured** - all service registra
 Configure your container once during application startup:
 
 ```typescript
-import { Container } from '@u-next/di';
+import { Container } from '@enorim/di';
 
 // Configure container at startup - do this ONCE
 function configureContainer(): Container {
@@ -53,7 +53,7 @@ const provider = container.provider();
 ### Simple Service Registration
 
 ```typescript
-import { Container } from '@u-next/di';
+import { Container } from '@enorim/di';
 
 // Define your services
 class DatabaseService {
@@ -86,7 +86,7 @@ console.log(userService.getUser('123'));
 Use service identifiers to register implementations for interfaces:
 
 ```typescript
-import { Container, createIdentifier } from '@u-next/di';
+import { Container, createIdentifier } from '@enorim/di';
 
 // Define interface and identifier
 interface Logger {
@@ -187,7 +187,7 @@ manager.runAll(); // Executes all plugins
 Create hierarchical service scopes:
 
 ```typescript
-import { Container, createScope } from '@u-next/di';
+import { Container, createScope } from '@enorim/di';
 
 const workspaceScope = createScope('workspace');
 const pageScope = createScope('page', workspaceScope);
