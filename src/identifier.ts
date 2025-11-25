@@ -1,12 +1,7 @@
 /* oxlint-disable no-explicit-any */
 import { DEFAULT_SERVICE_VARIANT } from "./consts";
 import { stableHash } from "./stable-hash";
-import type {
-  ServiceIdentifier,
-  ServiceIdentifierValue,
-  ServiceVariant,
-  Type,
-} from "./types";
+import type { ServiceIdentifier, ServiceIdentifierValue, ServiceVariant, Type } from "./types";
 
 /**
  * create a ServiceIdentifier.
@@ -79,8 +74,7 @@ import type {
 export function createIdentifier<T>(
   name: string,
   variant: ServiceVariant = DEFAULT_SERVICE_VARIANT,
-): ServiceIdentifier<T> &
-  (<U extends T = T>(variant: ServiceVariant) => ServiceIdentifier<U>) {
+): ServiceIdentifier<T> & (<U extends T = T>(variant: ServiceVariant) => ServiceIdentifier<U>) {
   return Object.assign(
     <U extends T = T>(variant: ServiceVariant) => {
       return createIdentifier<U>(name, variant);
@@ -98,9 +92,7 @@ export function createIdentifier<T>(
  *
  * @internal
  */
-export function createIdentifierFromConstructor<T>(
-  target: Type<T>,
-): ServiceIdentifier<T> {
+export function createIdentifierFromConstructor<T>(target: Type<T>): ServiceIdentifier<T> {
   return createIdentifier<T>(`${target.name}${stableHash(target)}`);
 }
 

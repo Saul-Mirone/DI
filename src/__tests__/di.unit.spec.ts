@@ -169,10 +169,9 @@ describe("di", () => {
     const provider = container.provider();
     const commandSystem = provider.get(CommandSystem);
 
-    expect(
-      pageSystemInitialized,
-      "PageSystem won't be initialized until command executed",
-    ).toEqual(false);
+    expect(pageSystemInitialized, "PageSystem won't be initialized until command executed").toEqual(
+      false,
+    );
 
     commandSystem.execute("option+s");
     expect(pageSystemInitialized).toEqual(true);
@@ -265,9 +264,7 @@ describe("di", () => {
     const container = new Container();
 
     const provider = container.provider();
-    expect(() => provider.get(createIdentifier("SomeService"))).toThrowError(
-      ServiceNotFoundError,
-    );
+    expect(() => provider.get(createIdentifier("SomeService"))).toThrowError(ServiceNotFoundError);
   });
 
   test("missing dependency", () => {
@@ -316,16 +313,12 @@ describe("di", () => {
     class A {}
 
     container.add(A);
-    expect(() => container.add(A)).toThrowError(
-      DuplicateServiceDefinitionError,
-    );
+    expect(() => container.add(A)).toThrowError(DuplicateServiceDefinitionError);
 
     class B {}
     const Something = createIdentifier("something");
     container.addImpl(Something, A);
-    expect(() => container.addImpl(Something, B)).toThrowError(
-      DuplicateServiceDefinitionError,
-    );
+    expect(() => container.addImpl(Something, B)).toThrowError(DuplicateServiceDefinitionError);
   });
 
   test("recursion limit", () => {
@@ -341,9 +334,7 @@ describe("di", () => {
         constructor(_next: any) {}
       }
 
-      container.addImpl(Something(i.toString()), Test, [
-        Something(next.toString()),
-      ]);
+      container.addImpl(Something(i.toString()), Test, [Something(next.toString())]);
     }
 
     class Final {
@@ -351,9 +342,7 @@ describe("di", () => {
     }
     container.addImpl(Something(i.toString()), Final);
     const provider = container.provider();
-    expect(() => provider.get(Something("0"))).toThrowError(
-      RecursionLimitError,
-    );
+    expect(() => provider.get(Something("0"))).toThrowError(RecursionLimitError);
   });
 
   test("self resolve", () => {

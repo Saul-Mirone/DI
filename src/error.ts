@@ -9,10 +9,7 @@ export class RecursionLimitError extends Error {
 
 export class CircularDependencyError extends Error {
   constructor(readonly dependencyStack: ServiceIdentifierValue[]) {
-    super(
-      `A circular dependency was detected.\n` +
-        stringifyDependencyStack(dependencyStack),
-    );
+    super(`A circular dependency was detected.\n` + stringifyDependencyStack(dependencyStack));
   }
 }
 
@@ -29,9 +26,7 @@ export class MissingDependencyError extends Error {
     readonly dependencyStack: ServiceIdentifierValue[],
   ) {
     super(
-      `Missing dependency ${stringifyIdentifier(
-        target,
-      )} in creating service ${stringifyIdentifier(
+      `Missing dependency ${stringifyIdentifier(target)} in creating service ${stringifyIdentifier(
         from,
       )}.\n${stringifyDependencyStack(dependencyStack)}`,
     );
@@ -46,14 +41,10 @@ export class DuplicateServiceDefinitionError extends Error {
 
 function stringifyIdentifier(identifier: ServiceIdentifierValue) {
   return `[${identifier.identifierName}]${
-    identifier.variant !== DEFAULT_SERVICE_VARIANT
-      ? `(${identifier.variant})`
-      : ""
+    identifier.variant !== DEFAULT_SERVICE_VARIANT ? `(${identifier.variant})` : ""
   }`;
 }
 
 function stringifyDependencyStack(dependencyStack: ServiceIdentifierValue[]) {
-  return dependencyStack
-    .map((identifier) => `${stringifyIdentifier(identifier)}`)
-    .join(" -> ");
+  return dependencyStack.map((identifier) => `${stringifyIdentifier(identifier)}`).join(" -> ");
 }
