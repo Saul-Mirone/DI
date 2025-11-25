@@ -18,7 +18,7 @@
     "oxfmt": "^0.14.0",
     "oxlint": "^1.29.0",
     "typescript": "^5.2.2",
-    "vitest": "^0.34.3"
+    "vitest": "^4.0.0"
   },
   "exports": {
     ".": {
