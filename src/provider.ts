@@ -7,11 +7,7 @@ import {
   ServiceNotFoundError,
 } from "./error";
 import { parseIdentifier } from "./identifier";
-import type {
-  GeneralServiceIdentifier,
-  ServiceIdentifierValue,
-  ServiceVariant,
-} from "./types";
+import type { GeneralServiceIdentifier, ServiceIdentifierValue, ServiceVariant } from "./types";
 
 export interface ResolveOptions {
   sameScope?: boolean;
@@ -43,20 +39,14 @@ export abstract class ServiceProvider {
     options?: ResolveOptions,
   ): Map<ServiceVariant, any>;
 
-  getOptional<T>(
-    identifier: GeneralServiceIdentifier<T>,
-    options?: ResolveOptions,
-  ): T | null {
+  getOptional<T>(identifier: GeneralServiceIdentifier<T>, options?: ResolveOptions): T | null {
     return this.getRaw(parseIdentifier(identifier), {
       ...options,
       optional: true,
     });
   }
 
-  abstract getRaw(
-    identifier: ServiceIdentifierValue,
-    options?: ResolveOptions,
-  ): any;
+  abstract getRaw(identifier: ServiceIdentifierValue, options?: ResolveOptions): any;
 
   [Symbol.dispose]() {
     this.dispose();
@@ -116,10 +106,7 @@ export class ServiceResolver extends ServiceProvider {
     identifier: ServiceIdentifierValue,
     { sameScope = false }: ResolveOptions = {},
   ): Map<ServiceVariant, any> {
-    const vars = this.provider.container.getFactoryAll(
-      identifier,
-      this.provider.scope,
-    );
+    const vars = this.provider.container.getFactoryAll(identifier, this.provider.scope);
 
     if (vars === undefined) {
       if (this.provider.parent && !sameScope) {
@@ -140,11 +127,7 @@ export class ServiceResolver extends ServiceProvider {
             return factory(nextResolver);
           } catch (err) {
             if (err instanceof ServiceNotFoundError) {
-              throw new MissingDependencyError(
-                identifier,
-                err.identifier,
-                this.stack,
-              );
+              throw new MissingDependencyError(identifier, err.identifier, this.stack);
             }
             throw err;
           }
@@ -160,10 +143,7 @@ export class ServiceResolver extends ServiceProvider {
     identifier: ServiceIdentifierValue,
     { sameScope = false, optional = false }: ResolveOptions = {},
   ) {
-    const factory = this.provider.container.getFactory(
-      identifier,
-      this.provider.scope,
-    );
+    const factory = this.provider.container.getFactory(identifier, this.provider.scope);
     if (!factory) {
       if (this.provider.parent && !sameScope) {
         return this.provider.parent.getRaw(identifier, {
@@ -184,11 +164,7 @@ export class ServiceResolver extends ServiceProvider {
         return factory(nextResolver);
       } catch (err) {
         if (err instanceof ServiceNotFoundError) {
-          throw new MissingDependencyError(
-            identifier,
-            err.identifier,
-            this.stack,
-          );
+          throw new MissingDependencyError(identifier, err.identifier, this.stack);
         }
         throw err;
       }
@@ -201,18 +177,13 @@ export class ServiceResolver extends ServiceProvider {
       throw new RecursionLimitError();
     }
     const circular = this.stack.find(
-      (i) =>
-        i.identifierName === identifier.identifierName &&
-        i.variant === identifier.variant,
+      (i) => i.identifierName === identifier.identifierName && i.variant === identifier.variant,
     );
     if (circular) {
       throw new CircularDependencyError([...this.stack, identifier]);
     }
 
-    return new ServiceResolver(this.provider, depth, [
-      ...this.stack,
-      identifier,
-    ]);
+    return new ServiceResolver(this.provider, depth, [...this.stack, identifier]);
   }
 
   override dispose(): void {}

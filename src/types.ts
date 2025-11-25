@@ -22,11 +22,7 @@ export type ServiceIdentifier<T> = {
 };
 
 export type ServiceIdentifierType<T> =
-  T extends ServiceIdentifier<infer R>
-    ? R
-    : T extends Type<infer R>
-      ? R
-      : never;
+  T extends ServiceIdentifier<infer R> ? R : T extends Type<infer R> ? R : never;
 
 export type TypesToDeps<T extends any[]> = {
   [index in keyof T]:
