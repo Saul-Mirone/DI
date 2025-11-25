@@ -10,7 +10,7 @@
     "test": "vitest --run"
   },
   "devDependencies": {
-    "oxfmt": "^0.14.0",
+    "oxfmt": "^0.15.0",
     "oxlint": "^1.29.0",
     "typescript": "^5.2.2",
     "vitest": "^0.34.3"
